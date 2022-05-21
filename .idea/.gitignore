@@ -1,3 +1,19 @@
 # Default ignored files
 /shelf/
 /workspace.xml
+*.class
+
+/out
+/target
+
+### STS ###
+*.classpath
+*.project
+*.settings
+
+### IntelliJ IDEA ###
+*.idea
+*.iml
+
+### NetBeans ###
+build/
