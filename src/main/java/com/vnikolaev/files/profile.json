@@ -1,0 +1,51 @@
+{
+   "phone_numbers": [
+      "+359898359332",
+      "+359898334211",
+      "+359098421129"
+   ],
+   "addresses": [
+      {
+         "postcode": "9000",
+         "country": "BG",
+         "city": "Varna"
+      },
+      {
+         "postcode": "1241",
+         "country": "BG",
+         "city": "Sofia"
+      },
+      {
+         "postcode": "3000",
+         "country": "UK",
+         "city": "London"
+      }
+   ],
+   "names": {
+      "last": "Georgiev",
+      "first": "Daniel",
+      "middle": "Ivanov"
+   },
+   "hobbies": [
+      "football",
+      "tennis",
+      "poker",
+      "tech",
+      "web-apps"
+   ],
+   "phone_numbers2": "51532213",
+   "grades": [
+      5,
+      6,
+      4,
+      3,
+      3,
+      2
+   ],
+   "age": "33",
+   "education": {
+      "university": "Harvard University",
+      "degree": "Computer Science",
+      "year": "Freshman"
+   }
+}

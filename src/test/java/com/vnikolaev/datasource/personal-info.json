@@ -1,0 +1,30 @@
+{
+  "phone_numbers": [
+    "12415411",
+    "51532213",
+    "25239621",
+    "34634609"
+  ],
+  "addresses": [
+    {
+      "country": "BG",
+      "city": {
+        "name": "Varna",
+        "neighbourhood": "Cvetniq"
+      },
+      "postcode": "9000"
+    },
+    {
+      "country": "BG",
+      "city": "Sofia",
+      "postcode": "1241"
+    },
+    {
+      "country": "UK",
+      "city": "London",
+      "postcode": "3000"
+    }
+  ],
+  "name": "Me",
+  "age": 1000
+}

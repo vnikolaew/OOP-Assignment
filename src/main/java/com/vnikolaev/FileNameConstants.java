@@ -13,6 +13,6 @@ public class FileNameConstants {
             .toString();
 
     public static final String TestFilesDirectory =
-            Path.of(baseDirectory, "test", "java", "com", "vnikolaev", "datasource")
+            Path.of(baseDirectory, "src", "test", "java", "com", "vnikolaev", "datasource")
                     .toString();
 }
