@@ -5,6 +5,11 @@ import com.vnikolaev.datasource.JSONDataSourceImpl;
 import com.vnikolaev.datasource.conversions.JSONConverterImpl;
 import com.vnikolaev.io.*;
 
+/**
+ * As the name implies, this class is responsible for hiding the complexity
+ * of wiring up all the application's components together behind a simple
+ * interface.
+ */
 public class CLIAppFacade {
 
     public void run(String[] args) {

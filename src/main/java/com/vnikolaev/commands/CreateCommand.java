@@ -1,10 +1,13 @@
 package com.vnikolaev.commands;
 
-import com.vnikolaev.abstractions.CLICommand;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.DataSourceOperationResult;
-import com.vnikolaev.abstractions.JSONDataSource;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * A command for creating a new JSON element in the current JSON object.
+ * Expected usage: create <path> <jsonString>
+ */
 public class CreateCommand extends CLICommand {
 
     private final JSONDataSource dataSource;

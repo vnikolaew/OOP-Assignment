@@ -4,6 +4,9 @@ import com.vnikolaev.abstractions.IODevice;
 
 import java.util.Scanner;
 
+/**
+ * A simple class for interacting with the standard I/O (Console).
+ */
 public class ConsoleIO implements IODevice {
 
     @Override

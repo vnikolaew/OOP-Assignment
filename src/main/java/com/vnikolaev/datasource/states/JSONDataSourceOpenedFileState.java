@@ -1,7 +1,6 @@
 package com.vnikolaev.datasource.states;
 
-import com.vnikolaev.abstractions.FileIODevice;
-import com.vnikolaev.abstractions.JSONConverter;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.*;
 import com.vnikolaev.datasource.conversions.JSONConversionResult;
 
@@ -30,7 +29,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         String currentFile = dataSource.getCurrentFile().getPath();
 
         dataSource
-                .setCurrentState(new JSONDataSourceClosedFileState(dataSource));
+                .setState(new JSONDataSourceClosedFileState(dataSource));
 
         return DataSourceOperationResult
                 .success("Successfully closed " + currentFile);
@@ -54,7 +53,9 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         }
 
         try {
-            dataSource.getFileIO().write(location, result.data());
+            String jsonString = result.data();
+
+            dataSource.getFileIO().write(location, jsonString);
             return DataSourceOperationResult
                     .success("Successfully saved " + location);
         } catch (IOException e) {
@@ -78,12 +79,12 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                     .failure(List.of("Invalid JSON schema."));
         }
 
-        Object jsonObject = conversionResult.data();
-
         Object current = traverseJsonObject
                 (Arrays.copyOf(segments, segments.length - 1), jsonMapData);
         String lastSegment = segments[segments.length - 1];
 
+
+        Object jsonObject = conversionResult.data();
         if(isAList(current)) {
             List<Object> list = (List<Object>) current;
 
@@ -253,18 +254,18 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
             if(!result.isSuccessful()) {
                 dataSource
-                        .setCurrentState(new JSONDataSourceClosedFileState(dataSource));
+                        .setState(new JSONDataSourceClosedFileState(dataSource));
 
                 return DataSourceOperationResult.failure(List.of(
                         "Invalid JSON schema.", result.error()));
             }
 
             jsonMapData = result.data();
-            dataSource.setJsonMapData(result.data());
+            dataSource.setJsonMapData(jsonMapData);
 
             return DataSourceOperationResult.success("JSON Schema is valid.");
         } catch (IOException e) {
-            dataSource.setCurrentState(new JSONDataSourceClosedFileState(dataSource));
+            dataSource.setState(new JSONDataSourceClosedFileState(dataSource));
 
             return DataSourceOperationResult.failure(List.of(
                     "Error trying to open a file: ", e.getMessage()));

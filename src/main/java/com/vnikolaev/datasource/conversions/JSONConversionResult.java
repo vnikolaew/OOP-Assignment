@@ -1,5 +1,10 @@
 package com.vnikolaev.datasource.conversions;
 
+/**
+ * Represents a result about how a conversion from / to a JSON
+ * object has gone.
+ * @param <T> The result data type.
+ */
 public record JSONConversionResult<T>(T data, String error) {
     public boolean isSuccessful() {
         return data != null;

@@ -5,6 +5,9 @@ import com.vnikolaev.results.*;
 
 import java.io.IOException;
 
+/**
+ * Represents the application's main entry point.
+ */
 public final class CLIApp {
 
     private final IODevice ioDevice;
@@ -23,6 +26,11 @@ public final class CLIApp {
         }
     }
 
+    /**
+     * The core method responsible for taking in user input, interpreting it to the
+     * appropriate request and executing it against the underlying data source. At
+     * the end it displays the result of the execution.
+     */
     private void processRequest() {
         String input = readUserInput();
 
@@ -39,7 +47,7 @@ public final class CLIApp {
                 Object data = ((QueryResult<?>) result).getData();
 
                 if(data != null) {
-                    ioDevice.write(((QueryResult<?>) result).getData() + newLine);
+                    ioDevice.write(data + newLine);
                 }
             }
         } catch (IOException ignored) { }
@@ -55,5 +63,4 @@ public final class CLIApp {
             return null;
         }
     }
-
 }

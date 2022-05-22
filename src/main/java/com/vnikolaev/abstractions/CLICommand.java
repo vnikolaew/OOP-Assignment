@@ -2,6 +2,11 @@ package com.vnikolaev.abstractions;
 
 import com.vnikolaev.results.CommandResult;
 
+
+/**
+ * Represents the base class for all the application's commands that
+ * are intended to change or write data -  sent by the user.
+ */
 public abstract class CLICommand implements CLIRequest {
 
     protected final String[] args;

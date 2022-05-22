@@ -7,7 +7,14 @@ import com.vnikolaev.datasource.states.JSONDataSourceState;
 import java.util.*;
 import java.io.File;
 
-public class JSONDataSourceImpl implements JSONDataSource {
+
+/**
+ * The main class for interacting with JSON objects and JSON-type files.
+ * It provides common capabilities such as creating, moving, updating and
+ * deleting JSON elements, as well as searching functionality. It also offers
+ * possibility for saving made changes to a file.
+ */
+public final class JSONDataSourceImpl implements JSONDataSource {
 
     private final FileIODevice fileIO;
 
@@ -54,7 +61,7 @@ public class JSONDataSourceImpl implements JSONDataSource {
         return state;
     }
 
-    public void setCurrentState(JSONDataSourceState state) {
+    public void setState(JSONDataSourceState state) {
         this.state = state;
     }
 

@@ -3,6 +3,9 @@ package com.vnikolaev;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
+/**
+ * A class that holds full absolute paths to commonly used directories
+ */
 public class FileNameConstants {
     public static final String baseDirectory =
             Path.of(Paths.get("").toAbsolutePath().toString())

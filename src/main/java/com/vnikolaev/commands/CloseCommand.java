@@ -5,6 +5,10 @@ import com.vnikolaev.abstractions.JSONDataSource;
 import com.vnikolaev.datasource.DataSourceOperationResult;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * A command for closing the currently opened file (if any).
+ * Expected usage: close <fileName>
+ */
 public class CloseCommand extends CLICommand {
 
     private final JSONDataSource dataSource;

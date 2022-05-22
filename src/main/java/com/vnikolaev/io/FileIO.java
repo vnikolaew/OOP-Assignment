@@ -5,6 +5,9 @@ import com.vnikolaev.abstractions.FileIODevice;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 
+/**
+ * A simple class for interacting with the file system I/O.
+ */
 public class FileIO implements FileIODevice {
 
     @Override

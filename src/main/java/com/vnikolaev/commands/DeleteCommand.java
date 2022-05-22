@@ -5,6 +5,10 @@ import com.vnikolaev.datasource.DataSourceOperationResult;
 import com.vnikolaev.abstractions.JSONDataSource;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * A command for deleting an existing JSON element (if any) in the current
+ * JSON object. Expected usage: delete <path>
+ */
 public class DeleteCommand extends CLICommand {
 
     private final JSONDataSource dataSource;

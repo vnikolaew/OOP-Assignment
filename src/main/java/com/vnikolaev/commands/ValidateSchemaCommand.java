@@ -1,10 +1,13 @@
 package com.vnikolaev.commands;
 
-import com.vnikolaev.abstractions.CLICommand;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.DataSourceOperationResult;
-import com.vnikolaev.abstractions.JSONDataSource;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * Represents a command for validating the schema of the current JSON
+ * object. Expected usage: validate
+ */
 public class ValidateSchemaCommand extends CLICommand {
 
     private final JSONDataSource dataSource;

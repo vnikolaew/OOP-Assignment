@@ -1,5 +1,8 @@
 package com.vnikolaev.results;
 
+/**
+ * A response to a user supplied query.
+ */
 public class QueryResult<T> extends RequestResult {
 
     private final T data;

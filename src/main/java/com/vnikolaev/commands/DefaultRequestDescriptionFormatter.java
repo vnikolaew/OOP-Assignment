@@ -1,10 +1,14 @@
 package com.vnikolaev.commands;
 
-import com.vnikolaev.abstractions.CommandDescriptionFormatter;
+import com.vnikolaev.abstractions.RequestDescriptionFormatter;
 import com.vnikolaev.requestdescriptors.RequestDescriptor;
 
-public class DefaultCommandDescriptionFormatter
-        implements CommandDescriptionFormatter {
+/**
+ * A helper String formatting class responsible for displaying
+ * a nice description / information about an application's request.
+ */
+public class DefaultRequestDescriptionFormatter
+        implements RequestDescriptionFormatter {
 
     private static final String newLine = System.lineSeparator();
     private static final char whiteSpace = ' ';

@@ -21,13 +21,13 @@ public class JSONDataSourceClosedFileState implements JSONDataSourceState {
     public DataSourceOperationResult open(String location) {
 
         File currentFile = new File(location);
-        if(!currentFile.exists()) {
+        if(!currentFile.exists() || !currentFile.isFile()) {
             return DataSourceOperationResult
                     .failure(List.of("File not found."));
         }
 
         dataSource.setCurrentFile(currentFile);
-        dataSource.setCurrentState(new JSONDataSourceOpenedFileState(dataSource));
+        dataSource.setState(new JSONDataSourceOpenedFileState(dataSource));
 
         return DataSourceOperationResult
                 .success("Successfully opened file " + location);
@@ -77,7 +77,7 @@ public class JSONDataSourceClosedFileState implements JSONDataSourceState {
 
     @Override
     public List<?> searchElement(String key) {
-        return null;
+        return List.of();
     }
 
     @Override

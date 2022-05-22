@@ -8,6 +8,12 @@ import org.json.JSONObject;
 import java.util.List;
 import java.util.Map;
 
+/**
+ * A JSON conversion service that effectively acts as an adapter between
+ * the foreign JSON library and the interface that our application expects
+ * and wants to work with. Supports conversions between the native HashMap
+ * and String (and vice/versa), as well as plain Objects and String.
+ */
 public class JSONConverterImpl implements JSONConverter {
 
     @Override

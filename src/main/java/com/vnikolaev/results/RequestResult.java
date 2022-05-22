@@ -1,5 +1,9 @@
 package com.vnikolaev.results;
 
+/**
+ * A base class representing the response from the data source operation
+ * that the user requested.
+ */
 public abstract class RequestResult {
 
     protected final String resultMessage;

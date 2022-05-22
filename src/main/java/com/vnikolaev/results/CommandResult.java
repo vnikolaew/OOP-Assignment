@@ -1,5 +1,8 @@
 package com.vnikolaev.results;
 
+/**
+ * A response to a user sent command.
+ */
 public class CommandResult extends RequestResult {
 
     public CommandResult(String resultMessage, boolean success) {

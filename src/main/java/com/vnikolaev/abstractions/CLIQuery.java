@@ -2,6 +2,10 @@ package com.vnikolaev.abstractions;
 
 import com.vnikolaev.results.QueryResult;
 
+/**
+ * Represents the base class for all the application's queries that
+ * the user may search against.
+ */
 public abstract class CLIQuery<T> implements CLIRequest {
 
     protected final String[] args;

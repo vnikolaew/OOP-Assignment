@@ -1,16 +1,19 @@
 package com.vnikolaev.commands;
 
-import com.vnikolaev.abstractions.CLIQuery;
-import com.vnikolaev.abstractions.CommandDescriptionFormatter;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.requestdescriptors.*;
 import com.vnikolaev.results.QueryResult;
 
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * A query for displaying helpful user information about the all the
+ * application's requests with their descriptions and expected usages.
+ */
 public class HelpCommand extends CLIQuery<String> {
 
-    private final CommandDescriptionFormatter formatter;
+    private final RequestDescriptionFormatter formatter;
 
     private static final List<RequestDescriptor> descriptors;
 
@@ -30,7 +33,7 @@ public class HelpCommand extends CLIQuery<String> {
                     new ExitCommandDescriptor()));
     }
 
-    public HelpCommand(CommandDescriptionFormatter formatter) {
+    public HelpCommand(RequestDescriptionFormatter formatter) {
         super(new String[0]);
         this.formatter = formatter;
     }

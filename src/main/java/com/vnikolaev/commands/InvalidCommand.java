@@ -3,6 +3,10 @@ package com.vnikolaev.commands;
 import com.vnikolaev.abstractions.CLICommand;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * Represents an invalid command issued by the user that is not supported
+ * or is unavailable by the application.
+ */
 public class InvalidCommand extends CLICommand {
 
     public InvalidCommand() {

@@ -1,10 +1,14 @@
 package com.vnikolaev.commands;
 
-import com.vnikolaev.abstractions.CLICommand;
-import com.vnikolaev.abstractions.JSONDataSource;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.DataSourceOperationResult;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * Represents a command for moving a JSON element from one path to another.
+ * Note that new elements may be created if the newly specified path requires it.
+ * Expected usage: move <fromPath> <toPath>
+ */
 public class MoveCommand extends CLICommand {
 
     private final JSONDataSource dataSource;
