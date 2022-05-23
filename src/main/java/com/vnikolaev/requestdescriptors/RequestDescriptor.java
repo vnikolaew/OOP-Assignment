@@ -1,5 +1,9 @@
 package com.vnikolaev.requestdescriptors;
 
+/**
+ * A base class that holds information about a specific request's usage, e.g.
+ * name, list of arguments, and a short description of its purpose.
+ */
 public abstract class RequestDescriptor {
 
     protected final String commandName;

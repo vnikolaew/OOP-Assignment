@@ -13,22 +13,22 @@ import com.vnikolaev.io.*;
 public class CLIAppFacade {
 
     public void run(String[] args) {
-        String filePath = args.length == 0
+        String currentDirectory = args.length == 0
                 ? FileNameConstants.MainFilesDirectory
                 : args[0];
 
-        CLIApp app = buildApplication(filePath);
+        CLIApp app = buildApplication(currentDirectory);
         app.run();
     }
 
-    private CLIApp buildApplication(String filePath) {
+    private CLIApp buildApplication(String currentDirectory) {
         IODevice consoleIO = new ConsoleIO();
         FileIODevice fileIO = new FileIO();
 
         JSONConverter converter = new JSONConverterImpl();
         JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter);
 
-        ((JSONDataSourceImpl) dataSource).setBaseDirectory(filePath);
+        ((JSONDataSourceImpl) dataSource).setCurrentDirectory(currentDirectory);
 
         CLIRequestFactory requestFactory = new CLIRequestFactoryImpl(dataSource);
 

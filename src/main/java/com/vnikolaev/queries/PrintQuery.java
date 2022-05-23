@@ -1,12 +1,13 @@
 package com.vnikolaev.queries;
 
-import com.vnikolaev.abstractions.CLIQuery;
-import com.vnikolaev.abstractions.JSONDataSource;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.results.QueryResult;
 
-import java.util.Arrays;
-import java.util.List;
-
+/**
+ * Represents a query request for displaying the entire JSON object in a
+ * friendly formatted string.
+ * Expected usage: print
+ */
 public class PrintQuery extends CLIQuery<String> {
 
     private final JSONDataSource dataSource;

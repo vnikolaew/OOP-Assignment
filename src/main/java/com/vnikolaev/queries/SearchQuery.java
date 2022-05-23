@@ -1,12 +1,16 @@
 package com.vnikolaev.queries;
 
-import com.vnikolaev.abstractions.CLIQuery;
-import com.vnikolaev.abstractions.JSONDataSource;
+import com.vnikolaev.abstractions.*;
 import com.vnikolaev.results.QueryResult;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
+/**
+ * Represents a search query request for finding a specific JSON element
+ * matched by the specified path.
+ * Expected usage: search <key>
+ */
 public class SearchQuery extends CLIQuery<String> {
 
     private final JSONDataSource dataSource;

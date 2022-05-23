@@ -1,12 +1,10 @@
 package com.vnikolaev.datasource;
 
 import com.vnikolaev.abstractions.*;
-import com.vnikolaev.datasource.states.JSONDataSourceClosedFileState;
-import com.vnikolaev.datasource.states.JSONDataSourceState;
+import com.vnikolaev.datasource.states.*;
 
 import java.util.*;
 import java.io.File;
-
 
 /**
  * The main class for interacting with JSON objects and JSON-type files.
@@ -22,7 +20,7 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     private File currentFile;
 
-    private String baseDirectory;
+    private String currentDirectory;
 
     private JSONDataSourceState state;
 
@@ -41,8 +39,8 @@ public final class JSONDataSourceImpl implements JSONDataSource {
         this.currentFile = file;
     }
 
-    public void setBaseDirectory(String baseDirectory) {
-        this.baseDirectory = baseDirectory;
+    public void setCurrentDirectory(String currentDirectory) {
+        this.currentDirectory = currentDirectory;
     }
 
     public File getCurrentFile() {
@@ -76,7 +74,7 @@ public final class JSONDataSourceImpl implements JSONDataSource {
     @Override
     public DataSourceOperationResult open(String location) {
         DataSourceOperationResult fileOpenResult
-                = state.open(baseDirectory + pathDelimiter + location);
+                = state.open(currentDirectory + pathDelimiter + location);
 
         if(fileOpenResult.hasFailed()) {
             return fileOpenResult;
@@ -100,7 +98,7 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     @Override
     public DataSourceOperationResult saveAs(String location) {
-        return state.saveAs(baseDirectory + pathDelimiter + location);
+        return state.saveAs(currentDirectory + pathDelimiter + location);
     }
 
     @Override
