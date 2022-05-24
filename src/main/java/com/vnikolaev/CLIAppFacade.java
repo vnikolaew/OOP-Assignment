@@ -3,6 +3,8 @@ package com.vnikolaev;
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.JSONDataSourceImpl;
 import com.vnikolaev.datasource.conversions.JSONConverterImpl;
+import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
+import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 import com.vnikolaev.io.*;
 
 /**
@@ -25,8 +27,10 @@ public class CLIAppFacade {
         IODevice consoleIO = new ConsoleIO();
         FileIODevice fileIO = new FileIO();
 
+        JSONPathInterpreter pathInterpreter = new ModernJSONPathInterpreter();
         JSONConverter converter = new JSONConverterImpl();
-        JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter);
+
+        JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter, pathInterpreter);
 
         ((JSONDataSourceImpl) dataSource).setCurrentDirectory(currentDirectory);
 

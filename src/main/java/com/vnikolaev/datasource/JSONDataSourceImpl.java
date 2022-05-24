@@ -1,7 +1,11 @@
 package com.vnikolaev.datasource;
 
 import com.vnikolaev.abstractions.*;
+import com.vnikolaev.datasource.conversions.JSONConverterImpl;
+import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
+import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 import com.vnikolaev.datasource.states.*;
+import com.vnikolaev.io.FileIO;
 
 import java.util.*;
 import java.io.File;
@@ -18,6 +22,8 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     private final JSONConverter jsonConverter;
 
+    private final JSONPathInterpreter pathInterpreter;
+
     private File currentFile;
 
     private String currentDirectory;
@@ -28,9 +34,21 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     private static final String pathDelimiter = File.separator;
 
+    /**
+     * Poor man's DI :( ...
+     */
+    public JSONDataSourceImpl() {
+        this(new FileIO(), new JSONConverterImpl(), new ModernJSONPathInterpreter());
+    }
 
-    public JSONDataSourceImpl(FileIODevice fileIO, JSONConverter jsonConverter) {
+    public JSONDataSourceImpl(
+            FileIODevice fileIO,
+            JSONConverter jsonConverter,
+            JSONPathInterpreter pathInterpreter) {
+
         this.state = new JSONDataSourceClosedFileState(this);
+
+        this.pathInterpreter = pathInterpreter;
         this.fileIO = fileIO;
         this.jsonConverter = jsonConverter;
     }
@@ -69,6 +87,10 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     public void setJsonMapData(Map<String, Object> jsonMapData) {
         this.jsonMapData = jsonMapData;
+    }
+
+    public JSONPathInterpreter getPathInterpreter() {
+        return pathInterpreter;
     }
 
     @Override

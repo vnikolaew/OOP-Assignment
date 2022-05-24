@@ -1,7 +1,7 @@
 package com.vnikolaev.results;
 
 /**
- * A response to a user supplied query.
+ * A response to a user supplied query containing data as well.
  */
 public class QueryResult<T> extends RequestResult {
 

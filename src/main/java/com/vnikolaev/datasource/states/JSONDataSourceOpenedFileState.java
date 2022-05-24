@@ -3,6 +3,7 @@ package com.vnikolaev.datasource.states;
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.*;
 import com.vnikolaev.datasource.conversions.JSONConversionResult;
+import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
 
 import java.io.IOException;
 import java.util.*;
@@ -13,9 +14,12 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     private final JSONDataSourceImpl dataSource;
 
+    private final JSONPathInterpreter pathInterpreter;
+
     public JSONDataSourceOpenedFileState(JSONDataSourceImpl dataSource) {
         this.dataSource = dataSource;
         this.jsonMapData = dataSource.getJsonMapData();
+        this.pathInterpreter = dataSource.getPathInterpreter();
     }
 
     @Override
@@ -66,7 +70,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     @Override
     public DataSourceOperationResult setElement(String path, String jsonPayload) {
-        String[] segments = getPathSegments(path);
+        String[] segments = pathInterpreter.getSegments(path);
 
         if(!elementExists(segments)) {
             return DataSourceOperationResult
@@ -112,7 +116,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     @Override
     public DataSourceOperationResult createElement(String path, String jsonPayload) {
-        String[] segments = getPathSegments(path);
+        String[] segments = pathInterpreter.getSegments(path);
 
         if (elementExists(segments)) {
             return DataSourceOperationResult
@@ -156,7 +160,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     @Override
     public DataSourceOperationResult deleteElement(String path) {
-        String[] segments = getPathSegments(path);
+        String[] segments = pathInterpreter.getSegments(path);
 
         if (!elementExists(segments)) {
             return DataSourceOperationResult
@@ -192,8 +196,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     @Override
     public DataSourceOperationResult moveElements(String fromPath, String toPath) {
-        String[] fromSegments = getPathSegments(fromPath);
-        String[] toSegments = getPathSegments(toPath);
+        String[] fromSegments = pathInterpreter.getSegments(fromPath);
+        String[] toSegments = pathInterpreter.getSegments(toPath);
 
         if(!elementExists(fromSegments)) {
             return DataSourceOperationResult
@@ -228,13 +232,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     @Override
     public List<?> searchElement(String key) {
-        String normalizedString = normalizeString(key);
-
-        if(normalizedString.isEmpty()) {
-            return convertObjectToList(jsonMapData);
-        }
-
-        String[] segments = normalizedString.split("/");
+        String[] segments = pathInterpreter.getSegments(key);
 
         Object currentJsonElement = traverseJsonObject(segments, jsonMapData);
 
@@ -280,22 +278,6 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 .data();
     }
 
-
-    private String normalizeString(String key) {
-        String newKey = removeWhiteSpaces(key);
-        return newKey.startsWith("/")
-                ? newKey.substring(1)
-                : newKey;
-    }
-
-    private String removeWhiteSpaces(String key) {
-        return key.replaceAll(" ", "");
-    }
-
-    private String[] getPathSegments(String path) {
-        return normalizeString(path).split("/");
-    }
-
     private Integer tryParseInt(String string) {
         try {
             return Integer.parseInt(string);
@@ -305,6 +287,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
     }
 
     private Object traverseJsonObject(String[] segments, Map<String, ?> jsonMap) {
+        if(segments.length == 0) return jsonMapData;
+
         Object current = jsonMap;
 
         for(String segment : segments) {

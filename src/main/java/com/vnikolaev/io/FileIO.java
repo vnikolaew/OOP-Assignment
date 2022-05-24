@@ -7,6 +7,8 @@ import java.nio.charset.StandardCharsets;
 
 /**
  * A simple class for interacting with the file system I/O.
+ * Note that it's different from the base IODevice in that
+ * it requires a file location as well.
  */
 public class FileIO implements FileIODevice {
 
