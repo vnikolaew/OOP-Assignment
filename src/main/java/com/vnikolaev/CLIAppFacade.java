@@ -3,7 +3,7 @@ package com.vnikolaev;
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.JSONDataSourceImpl;
 import com.vnikolaev.datasource.conversions.JSONConverterImpl;
-import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
+import com.vnikolaev.abstractions.JSONPathInterpreter;
 import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 import com.vnikolaev.io.*;
 

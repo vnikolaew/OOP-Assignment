@@ -3,7 +3,7 @@ package com.vnikolaev.datasource.states;
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.*;
 import com.vnikolaev.datasource.conversions.JSONConversionResult;
-import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
+import com.vnikolaev.abstractions.JSONPathInterpreter;
 
 import java.io.IOException;
 import java.util.*;

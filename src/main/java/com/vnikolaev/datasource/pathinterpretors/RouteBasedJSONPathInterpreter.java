@@ -1,5 +1,12 @@
 package com.vnikolaev.datasource.pathinterpretors;
 
+import com.vnikolaev.abstractions.JSONPathInterpreter;
+
+/**
+ * A simple interpreter that only parses JSON paths in a URL-like
+ * / route-like manner.
+ * Example paths: / , '', /path/to/some/data
+ */
 public class RouteBasedJSONPathInterpreter implements JSONPathInterpreter {
 
     @Override

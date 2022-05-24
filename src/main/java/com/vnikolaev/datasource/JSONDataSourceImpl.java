@@ -2,7 +2,7 @@ package com.vnikolaev.datasource;
 
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.conversions.JSONConverterImpl;
-import com.vnikolaev.datasource.pathinterpretors.JSONPathInterpreter;
+import com.vnikolaev.abstractions.JSONPathInterpreter;
 import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 import com.vnikolaev.datasource.states.*;
 import com.vnikolaev.io.FileIO;

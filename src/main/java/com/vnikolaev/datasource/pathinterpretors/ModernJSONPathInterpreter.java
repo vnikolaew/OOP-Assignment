@@ -1,8 +1,18 @@
 package com.vnikolaev.datasource.pathinterpretors;
 
+import com.vnikolaev.abstractions.JSONPathInterpreter;
+
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * An interpreter following and supporting the JSONPath query language syntax
+ * for JSON objects, similar to XPath for XML.
+ * Paths can use the dot notation: $.store.book[0].title
+ * or the bracket notation: $['store']['book'][0]['title']
+ * or a mix of dot and bracket notations: $['store'].book[0].title
+ * For more information you can check https://support.smartbear.com/alertsite/docs/monitors/api/endpoint/jsonpath.html
+ */
 public class ModernJSONPathInterpreter implements JSONPathInterpreter {
 
     private static final char rootPath = '$';
