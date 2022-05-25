@@ -16,6 +16,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     private final JSONPathInterpreter pathInterpreter;
 
+    private static final char spaceChar = ' ';
+
     public JSONDataSourceOpenedFileState(JSONDataSourceImpl dataSource) {
         this.dataSource = dataSource;
         this.jsonMapData = dataSource.getJsonMapData();
@@ -59,6 +61,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         try {
             String jsonString = result.data();
 
+            location = location.replaceAll("%20", String.valueOf(spaceChar));
+
             dataSource.getFileIO().write(location, jsonString);
             return DataSourceOperationResult
                     .success("Successfully saved " + location);
@@ -66,6 +70,11 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
             return DataSourceOperationResult
                     .failure(List.of("Error trying to open a file: " + e.getMessage()));
         }
+    }
+
+    @Override
+    public DataSourceOperationResult changeDirectory(String location) {
+        return null;
     }
 
     @Override

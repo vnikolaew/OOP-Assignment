@@ -7,6 +7,7 @@ import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 import com.vnikolaev.datasource.states.*;
 import com.vnikolaev.io.FileIO;
 
+import java.nio.file.Path;
 import java.util.*;
 import java.io.File;
 
@@ -26,7 +27,7 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     private File currentFile;
 
-    private String currentDirectory;
+    private String currentDirectory = "";
 
     private JSONDataSourceState state;
 
@@ -120,7 +121,55 @@ public final class JSONDataSourceImpl implements JSONDataSource {
 
     @Override
     public DataSourceOperationResult saveAs(String location) {
-        return state.saveAs(currentDirectory + pathDelimiter + location);
+        return state.saveAs(location);
+    }
+
+    @Override
+    public DataSourceOperationResult changeDirectory(String location) {
+        location = location.replaceAll("%20", " ");
+
+        // User is trying to go one directory up in the file tree.
+        if(location.equals("..")) {
+            File newDirectory = new File(currentDirectory).getParentFile();
+
+            if(isValidDirectory(newDirectory)) {
+                currentDirectory = newDirectory.toString();
+                return DataSourceOperationResult
+                        .success("Successfully changed directory to "
+                                + currentDirectory);
+            }
+            return DataSourceOperationResult
+                    .failure(List.of("Error. A directory with the name "
+                            + location + " doesn't exist."));
+        }
+
+        // First try with relative path to current directory
+        // and then with an absolute one:
+        Path newPath = Path.of(currentDirectory, location);
+
+        File relativeDirectory = new File(newPath.toString());
+        File absoluteDirectory = new File(location);
+
+        boolean isValidRelativeDir = isValidDirectory(relativeDirectory);
+        boolean isValidAbsoluteDir = isValidDirectory(absoluteDirectory);
+
+        if(isValidAbsoluteDir || isValidRelativeDir) {
+            currentDirectory = isValidAbsoluteDir
+                    ? absoluteDirectory.toString()
+                    : relativeDirectory.toString();
+
+            return DataSourceOperationResult
+                    .success("Successfully changed directory to "
+                            + currentDirectory);
+        }
+
+        return DataSourceOperationResult
+                .failure(List.of("Error. A directory with the name "
+                        + location + " doesn't exist."));
+    }
+
+    private boolean isValidDirectory(File relativeDirectory) {
+        return relativeDirectory.exists() && relativeDirectory.isDirectory();
     }
 
     @Override

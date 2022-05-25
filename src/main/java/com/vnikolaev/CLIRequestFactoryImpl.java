@@ -91,5 +91,6 @@ public class CLIRequestFactoryImpl implements CLIRequestFactory {
         requestMap.put("help", HelpCommand.class);
         requestMap.put("move", MoveCommand.class);
         requestMap.put("validate", ValidateSchemaCommand.class);
+        requestMap.put("cd", ChangeDirectoryCommand.class);
     }
 }

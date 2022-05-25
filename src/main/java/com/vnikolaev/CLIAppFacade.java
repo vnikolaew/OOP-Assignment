@@ -1,11 +1,11 @@
 package com.vnikolaev;
 
 import com.vnikolaev.abstractions.*;
-import com.vnikolaev.datasource.JSONDataSourceImpl;
-import com.vnikolaev.datasource.conversions.JSONConverterImpl;
-import com.vnikolaev.abstractions.JSONPathInterpreter;
-import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
+import com.vnikolaev.datasource.*;
 import com.vnikolaev.io.*;
+import com.vnikolaev.abstractions.JSONPathInterpreter;
+import com.vnikolaev.datasource.conversions.JSONConverterImpl;
+import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 
 /**
  * As the name implies, this class is responsible for hiding the complexity
@@ -16,7 +16,7 @@ public class CLIAppFacade {
 
     public void run(String[] args) {
         String currentDirectory = args.length == 0
-                ? FileNameConstants.MainFilesDirectory
+                ? FileNameConstants.javaDirectory
                 : args[0];
 
         CLIApp app = buildApplication(currentDirectory);
@@ -31,8 +31,7 @@ public class CLIAppFacade {
         JSONConverter converter = new JSONConverterImpl();
 
         JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter, pathInterpreter);
-
-        ((JSONDataSourceImpl) dataSource).setCurrentDirectory(currentDirectory);
+        dataSource.changeDirectory(currentDirectory);
 
         CLIRequestFactory requestFactory = new CLIRequestFactoryImpl(dataSource);
 

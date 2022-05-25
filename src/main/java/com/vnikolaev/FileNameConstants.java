@@ -11,11 +11,15 @@ public class FileNameConstants {
             Path.of(Paths.get("").toAbsolutePath().toString())
             .toString();
 
-    public static final String MainFilesDirectory =
+    public static final String filesDirectory =
             Path.of(baseDirectory, "src", "main", "java", "com", "vnikolaev", "files")
             .toString();
 
-    public static final String TestFilesDirectory =
+    public static final String javaDirectory =
+            Path.of(baseDirectory, "src", "main", "java")
+                    .toString();
+
+    public static final String testFilesDirectory =
             Path.of(baseDirectory, "src", "test", "java", "com", "vnikolaev", "datasource")
                     .toString();
 }

@@ -52,6 +52,11 @@ public class JSONDataSourceClosedFileState implements JSONDataSourceState {
     }
 
     @Override
+    public DataSourceOperationResult changeDirectory(String location) {
+        return null;
+    }
+
+    @Override
     public DataSourceOperationResult setElement(String path, String jsonPayload) {
         return DataSourceOperationResult
                 .failure(List.of("There's no file opened yet."));
