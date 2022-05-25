@@ -27,7 +27,7 @@ public class PrintQuery extends CLIQuery<String> {
     }
 
     @Override
-    public int getRequiredArgumentsLength() {
+    protected int getRequiredArgumentsLength() {
         return 0;
     }
 }

@@ -14,7 +14,7 @@ public class InvalidCommand extends CLICommand {
     }
 
     @Override
-    public int getRequiredArgumentsLength() {
+    protected int getRequiredArgumentsLength() {
         return 0;
     }
 

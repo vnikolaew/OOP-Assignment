@@ -11,6 +11,7 @@ import java.io.IOException;
 public final class CLIApp {
 
     private final IODevice ioDevice;
+
     private final CLIRequestFactory requestFactory;
 
     private static final String newLine = System.lineSeparator();

@@ -19,7 +19,7 @@ public class SaveAsCommand extends CLICommand {
     }
 
     @Override
-    public int getRequiredArgumentsLength() {
+    protected int getRequiredArgumentsLength() {
         return 1;
     }
 

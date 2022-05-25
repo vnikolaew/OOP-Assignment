@@ -37,7 +37,7 @@ public class SearchQuery extends CLIQuery<String> {
     }
 
     @Override
-    public int getRequiredArgumentsLength() {
+    protected int getRequiredArgumentsLength() {
         return 1;
     }
 }

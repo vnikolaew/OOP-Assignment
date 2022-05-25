@@ -19,7 +19,7 @@ public class DeleteCommand extends CLICommand {
     }
 
     @Override
-    public int getRequiredArgumentsLength() {
+    protected int getRequiredArgumentsLength() {
         return 1;
     }
 
