@@ -3,11 +3,14 @@ package com.vnikolaev.datasource;
 import com.vnikolaev.FileNameConstants;
 import com.vnikolaev.abstractions.*;
 import com.vnikolaev.datasource.conversions.JSONConverterImpl;
+import com.vnikolaev.abstractions.JSONPathInterpreter;
+import com.vnikolaev.datasource.pathinterpretors.RouteBasedJSONPathInterpreter;
 import com.vnikolaev.datasource.states.*;
 import org.json.JSONObject;
 import org.junit.jupiter.api.*;
 
 import java.io.*;
+import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,11 +18,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 class JSONDataSourceImplTest {
+
     private JSONDataSourceImpl jsonDataSource;
     private JSONConverter jsonConverter;
+    private JSONPathInterpreter pathInterpreter;
 
     private static final String baseDirectory
-            = FileNameConstants.TestFilesDirectory;
+            = FileNameConstants.testFilesDirectory;
     private static final String filePath = "personal-info.json";
 
     @BeforeEach
@@ -27,10 +32,11 @@ class JSONDataSourceImplTest {
         // Dependencies:
         FileIODevice fileIO = new FileIOMock();
         jsonConverter = new JSONConverterImpl();
+        pathInterpreter = new RouteBasedJSONPathInterpreter();
 
-        jsonDataSource = new JSONDataSourceImpl(fileIO, jsonConverter);
+        jsonDataSource = new JSONDataSourceImpl(fileIO, jsonConverter, pathInterpreter);
 
-        jsonDataSource.setBaseDirectory(baseDirectory);
+        jsonDataSource.setCurrentDirectory(baseDirectory);
         jsonDataSource.open("personal-info.json");
     }
 
@@ -41,16 +47,12 @@ class JSONDataSourceImplTest {
     }
 
     @Test
-    public void dataSource_FriendlyString_ShouldReturn_CorrectStringRepresentation() {
+    public void dataSource_FriendlyString_ShouldReturn_CorrectStringRepresentation()
+            throws IOException {
         DataSourceOperationResult result = jsonDataSource.validateSchema();
 
         assertTrue(result.isSuccessful());
         assertNotNull(jsonDataSource.toFriendlyString());
-
-        Map<String, ?> jsonData = new JSONObject(jsonDataSource.toFriendlyString()).toMap();
-        Map<String, ?> expected = new JSONObject(FileIOMock.jsonData).toMap();
-
-        assertEquals(expected, jsonData, "Success");
     }
 
     @Test
@@ -68,7 +70,7 @@ class JSONDataSourceImplTest {
 
         FileIODevice mock = mock(FileIODevice.class);
 
-        jsonDataSource = new JSONDataSourceImpl(mock, jsonConverter);
+        jsonDataSource = new JSONDataSourceImpl(mock, jsonConverter, pathInterpreter);
         jsonDataSource.setCurrentFile(new File(""));
 
         when(mock.read(jsonDataSource.getCurrentFile().getPath()))
@@ -82,11 +84,15 @@ class JSONDataSourceImplTest {
 
     @Test
     public void dataSource_Name_Search_ShouldReturn_AnObject() {
+
+        final String key = "name";
+        final String keyWithSlash = "/name";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("name");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/name");
+                .searchElement(keyWithSlash);
 
         List<Object> expected = new ArrayList<>();
         expected.add("Me");
@@ -101,11 +107,14 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_PhoneNumbers_Search_ShouldReturn_AListWithManyValues() {
 
+        final String key = "phone_numbers";
+        final String keyWithSlash = "/phone_numbers";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("phone_numbers");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/phone_numbers");
+                .searchElement(keyWithSlash);
 
         String[] expected = new String[] {"12415411","51532213","25239621","34634609"};
 
@@ -124,11 +133,14 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_Nested_Search_Address_Country_ShouldReturn_AListWithManyValues() {
 
+        final String key = "addresses/0/country";
+        final String keyWithSlash = "/addresses/0/country";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("addresses/0/country");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/addresses/0/country");
+                .searchElement(keyWithSlash);
 
         String expected = "BG";
 
@@ -142,11 +154,14 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_Nested_Search_Address_City_ShouldReturn_AListWithManyValues() {
 
+        final String key = "addresses/2/city";
+        final String keyWithSlash = "/addresses/2/city";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("addresses/2/city");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/addresses/2/city");
+                .searchElement(keyWithSlash);
 
         String expected = "London";
 
@@ -160,11 +175,14 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_Nested_Search_Addresses_ShouldReturn_AList() {
 
+        final String key = "addresses/1";
+        final String keyWithSlash = "/addresses/1";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("addresses/1");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/addresses/1");
+                .searchElement(keyWithSlash);
 
         List<Map.Entry<String, Object>> expected = new ArrayList<>();
         expected.add(Map.entry("country", "BG"));
@@ -181,11 +199,14 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_Address_Search_ShouldReturn_AListOfMaps() {
 
+        final String key = "addresses";
+        final String keyWithSlash = "/addresses";
+
         List<?> resultOne = jsonDataSource
-                .searchElement("addresses");
+                .searchElement(key);
 
         List<?> resultTwo = jsonDataSource
-                .searchElement("/addresses");
+                .searchElement(keyWithSlash);
 
         List<Map<String, Object>> expected = new ArrayList<>();
 
@@ -424,7 +445,7 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_OpeningFileShouldSetDataSourceStateToOpened() {
         jsonDataSource.close();
-        jsonDataSource.setBaseDirectory(baseDirectory);
+        jsonDataSource.setCurrentDirectory(baseDirectory);
         jsonDataSource.open(filePath);
 
         assertEquals(JSONDataSourceOpenedFileState.class, jsonDataSource.getState().getClass());
@@ -433,7 +454,7 @@ class JSONDataSourceImplTest {
     @Test
     public void dataSource_OpeningNonExistingFileShouldSetDataSourceStateToClosed() {
         jsonDataSource.close();
-        jsonDataSource.setBaseDirectory(baseDirectory);
+        jsonDataSource.setCurrentDirectory(baseDirectory);
         jsonDataSource.open("file-does-not-exist.json");
 
         assertEquals(JSONDataSourceClosedFileState.class, jsonDataSource.getState().getClass());
@@ -447,45 +468,22 @@ class JSONDataSourceImplTest {
     }
 
     private class FileIOMock implements FileIODevice {
-        public static final String jsonData = """
-                    {
-                   "phone_numbers": [
-                      "12415411",
-                      "51532213",
-                      "25239621",
-                      "34634609"
-                   ],
-                   "addresses": [
-                      {
-                         "country": "BG",
-                         "city": {
-                            "name": "Varna",
-                            "neighbourhood": "Cvetniq"
-                         },
-                         "postcode": "9000"
-                      },
-                      {
-                         "country": "BG",
-                         "city": "Sofia",
-                         "postcode": "1241"
-                      },
-                      {
-                         "country": "UK",
-                         "city": "London",
-                         "postcode": "3000"
-                      }
-                   ],
-                   "name": "Me",
-                   "age": 1000
-                }""";
+
+        private String jsonData;
 
         @Override
         public void write(String filePath, String content) {
         }
 
         @Override
-        public String read(String filePath) {
-            return jsonData;
+        public String read(String filePath) throws IOException {
+            if(jsonData != null) return jsonData;
+
+            InputStream stream = new FileInputStream(JSONDataSourceImplTest.baseDirectory + "/" + JSONDataSourceImplTest.filePath);
+            byte[] data = stream.readAllBytes();
+
+            stream.close();
+            return (jsonData = new String(data, StandardCharsets.UTF_8));
         }
     }
 }
