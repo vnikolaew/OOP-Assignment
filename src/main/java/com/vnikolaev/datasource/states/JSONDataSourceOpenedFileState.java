@@ -8,6 +8,11 @@ import com.vnikolaev.abstractions.JSONPathInterpreter;
 import java.io.IOException;
 import java.util.*;
 
+/**
+ * A state class representing a file that's currently in an opened state
+ * and the JSON schema is validated. This is the class where most of the work
+ * and logic related to interacting with the JSON data resides.
+ */
 public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     private Map<String, Object> jsonMapData;
@@ -103,7 +108,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
             Integer index = tryParseInt(lastSegment);
             if(index == null || isOutOfBounds(index, list)) {
-                return DataSourceOperationResult.failure(List.of("Invalid path"));
+                return DataSourceOperationResult
+                        .failure(List.of("Invalid path"));
             }
 
             list.set(index, jsonObject);
@@ -138,12 +144,12 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                     .failure(List.of("Invalid JSON schema."));
         }
 
-        Object jsonObject = conversionResult.data();
-
         Object current = traverseJsonObjectAndCreateElementsIfAbsent
                 (Arrays.copyOf(segments, segments.length - 1), jsonMapData);
         String lastSegment = segments[segments.length - 1];
 
+
+        Object jsonObject = conversionResult.data();
         if(isAList(current)) {
             List<Object> list = (List<Object>) current;
 
@@ -296,7 +302,7 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
     }
 
     private Object traverseJsonObject(String[] segments, Map<String, ?> jsonMap) {
-        if(segments.length == 0) return jsonMapData;
+        if(segments.length == 0) return jsonMap;
 
         Object current = jsonMap;
 
@@ -324,6 +330,8 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
 
     private Object traverseJsonObjectAndCreateElementsIfAbsent
             (String[] segments, Map<String, ?> jsonMap) {
+        if(segments.length == 0) return jsonMap;
+
         Object current = jsonMap;
 
         for(String segment : segments) {

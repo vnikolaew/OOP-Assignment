@@ -25,6 +25,12 @@ public class CLIRequestFactoryImpl implements CLIRequestFactory {
         this.dataSource = dataSource;
     }
 
+    /**
+     * A method for interpreting the user's request into a corresponding
+     * action and additional arguments and converting it into a proper
+     * application request object. Note that any unknown / unsupported
+     * action will be translated to an Invalid command.
+     */
     @Override
     public CLIRequest createRequest(String requestString) {
         String[] requestSegments = getRequestSegments(requestString);

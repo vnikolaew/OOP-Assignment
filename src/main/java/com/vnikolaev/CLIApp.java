@@ -41,6 +41,11 @@ public final class CLIApp {
         outputResult(result);
     }
 
+    /**
+     * A method for displaying the result of the user request that
+     * was sent on the output device. Note that it also displays
+     * additional data if the user made a query request.
+     */
     private void outputResult(RequestResult result) {
         try {
             ioDevice.write(result.getResultMessage() + newLine);
@@ -54,6 +59,9 @@ public final class CLIApp {
         } catch (IOException ignored) { }
     }
 
+    /**
+     * A method for reading user input from the input device.
+     */
     private String readUserInput() {
         final String promptSymbol = "> ";
 

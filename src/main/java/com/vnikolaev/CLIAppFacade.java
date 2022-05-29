@@ -15,15 +15,16 @@ import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 public class CLIAppFacade {
 
     public void run(String[] args) {
-        String currentDirectory = args.length == 0
-                ? FileNameConstants.javaDirectory
-                : args[0];
-
-        CLIApp app = buildApplication(currentDirectory);
+        CLIApp app = buildApplication();
         app.run();
     }
 
-    private CLIApp buildApplication(String currentDirectory) {
+    /**
+     * The core method for instantiating all the objects and wiring up all
+     * the application's dependencies and components together. At the end
+     * it returns the constructed CLI application.
+     */
+    private CLIApp buildApplication() {
         IODevice consoleIO = new ConsoleIO();
         FileIODevice fileIO = new FileIO();
 
@@ -31,7 +32,7 @@ public class CLIAppFacade {
         JSONConverter converter = new JSONConverterImpl();
 
         JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter, pathInterpreter);
-        dataSource.changeDirectory(currentDirectory);
+        dataSource.changeDirectory(FileNameConstants.filesDirectory);
 
         CLIRequestFactory requestFactory = new CLIRequestFactoryImpl(dataSource);
 

@@ -140,11 +140,9 @@ public final class JSONDataSourceImpl implements JSONDataSource {
             }
             return DataSourceOperationResult
                     .failure(List.of("Error. A directory with the name "
-                            + location + " doesn't exist."));
+                            + newDirectory + " doesn't exist."));
         }
 
-        // First try with relative path to current directory
-        // and then with an absolute one:
         Path newPath = Path.of(currentDirectory, location);
 
         File relativeDirectory = new File(newPath.toString());

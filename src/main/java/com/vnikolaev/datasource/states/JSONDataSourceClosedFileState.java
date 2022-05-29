@@ -6,6 +6,11 @@ import com.vnikolaev.datasource.JSONDataSourceImpl;
 import java.io.File;
 import java.util.List;
 
+/**
+ * A state class representing a file that's currently in a closed state.
+ * Most of the operations related to interacting with JSON here simply
+ * return a failed result.
+ */
 public class JSONDataSourceClosedFileState implements JSONDataSourceState {
 
     private final JSONDataSourceImpl dataSource;

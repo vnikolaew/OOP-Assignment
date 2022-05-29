@@ -5,6 +5,11 @@ import com.vnikolaev.abstractions.JSONDataSource;
 import com.vnikolaev.datasource.DataSourceOperationResult;
 import com.vnikolaev.results.CommandResult;
 
+/**
+ * A command for changing the current file system directory
+ * the user is located at.
+ * Expected usage: cd <directoryName>
+ */
 public class ChangeDirectoryCommand extends CLICommand {
 
     private final JSONDataSource dataSource;

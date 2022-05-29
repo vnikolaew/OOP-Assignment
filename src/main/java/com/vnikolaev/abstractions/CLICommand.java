@@ -15,6 +15,12 @@ public abstract class CLICommand implements CLIRequest {
         this.args = args;
     }
 
+    /**
+     * A template method for all application commands, checking whether
+     * the supplied arguments are the right amount and returning a failed
+     * result if not. Otherwise, it delegates the core logic to the derived
+     * classes.
+     */
     @Override
     public CommandResult execute() {
         int argsReceived = args.length;
@@ -27,5 +33,6 @@ public abstract class CLICommand implements CLIRequest {
     }
 
     protected abstract CommandResult executeCore();
+
     protected abstract int getRequiredArgumentsLength();
 }

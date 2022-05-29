@@ -5,6 +5,9 @@ package com.vnikolaev.results;
  */
 public class QueryResult<T> extends RequestResult {
 
+    /**
+     * The actual data that the result is returning.
+     */
     private final T data;
 
     public QueryResult(String resultMessage, boolean success, T data) {

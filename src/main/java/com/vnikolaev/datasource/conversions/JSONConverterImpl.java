@@ -16,6 +16,12 @@ import java.util.Map;
  */
 public class JSONConverterImpl implements JSONConverter {
 
+    /**
+     * @param jsonMap A map data structure that is going to be converted bac
+     *                to a JSON string representation.
+     * @return A standard string representing the JSON data structure with
+     * an indentation level of 3.
+     */
     @Override
     public JSONConversionResult<String> mapToString(Map<String, ?> jsonMap) {
         try {
@@ -26,6 +32,11 @@ public class JSONConverterImpl implements JSONConverter {
         }
     }
 
+    /**
+     * @param jsonPayload A JSON object in a string representation.
+     * @return A native HashMap object holding the corresponding JSON
+     * data structure.
+     */
     @Override
     public JSONConversionResult<Map<String, Object>> stringToMap(String jsonPayload) {
         try {

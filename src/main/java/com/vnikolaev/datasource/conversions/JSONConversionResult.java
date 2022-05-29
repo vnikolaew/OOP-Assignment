@@ -10,10 +10,19 @@ public record JSONConversionResult<T>(T data, String error) {
         return data != null;
     }
 
+    /**
+     * @param data The data being returned from the conversion.
+     * A static factory method for creating a successful result
+     * from the conversion.
+     */
     public static <E> JSONConversionResult<E> success(E data) {
         return new JSONConversionResult<>(data, null);
     }
 
+    /**
+     * A static factory method for creating a failed result
+     * from the conversion with an error message.
+     */
     public static <E> JSONConversionResult<E> failure(String error) {
         return new JSONConversionResult<>(null, error);
     }
