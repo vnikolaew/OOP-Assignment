@@ -15,6 +15,7 @@ import com.vnikolaev.datasource.pathinterpretors.ModernJSONPathInterpreter;
 public class CLIAppFacade {
 
     public void run(String[] args) {
+        System.out.println("Current directory is: " + FileNameConstants.currentDirectory);
         CLIApp app = buildApplication();
         app.run();
     }
@@ -32,7 +33,7 @@ public class CLIAppFacade {
         JSONConverter converter = new JSONConverterImpl();
 
         JSONDataSource dataSource = new JSONDataSourceImpl(fileIO, converter, pathInterpreter);
-        dataSource.changeDirectory(FileNameConstants.filesDirectory);
+        dataSource.changeDirectory(FileNameConstants.currentDirectory);
 
         CLIRequestFactory requestFactory = new CLIRequestFactoryImpl(dataSource);
 

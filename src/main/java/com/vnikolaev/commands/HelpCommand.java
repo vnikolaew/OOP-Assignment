@@ -23,6 +23,7 @@ public class HelpCommand extends CLIQuery<String> {
                     new CloseCommandDescriptor(),
                     new SaveCommandDescriptor(),
                     new SaveAsCommandDescriptor(),
+                    new ChangeDirectoryCommandDescriptor(),
                     new PrintQueryDescriptor(),
                     new SearchQueryDescriptor(),
                     new UpdateCommandDescriptor(),
@@ -46,7 +47,7 @@ public class HelpCommand extends CLIQuery<String> {
     @Override
     protected QueryResult<String> executeCore() {
         StringBuilder info = new StringBuilder();
-        info.append("The following commands are currently supported: ");
+        info.append("The following commands are currently supported: \n");
 
         for(RequestDescriptor descriptor : descriptors) {
             info.append(formatter.formatLine(descriptor));

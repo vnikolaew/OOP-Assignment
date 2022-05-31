@@ -24,6 +24,7 @@ public class ModernJSONPathInterpreter implements JSONPathInterpreter {
     @Override
     public String[] getSegments(String jsonPath) {
 
+        if(jsonPath.charAt(0) != rootPath) return null;
         if(jsonPath.length() == 1 && jsonPath.charAt(0) == rootPath) {
             return new String[0];
         }
@@ -55,7 +56,7 @@ public class ModernJSONPathInterpreter implements JSONPathInterpreter {
 
             segments.add(builder.toString());
         } else if(chars[currentChar] == openingBracket) {
-            if(chars[++currentChar] == '\'') {
+            if(chars[++currentChar] == singleQuote) {
                 currentChar = parseJsonPropertyInsideQuotes(++currentChar, chars, segments);
             } else {
                 currentChar = parseJsonIndexInsideBrackets(currentChar, chars, segments);

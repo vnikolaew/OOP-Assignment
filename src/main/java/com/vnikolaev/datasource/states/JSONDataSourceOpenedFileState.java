@@ -35,6 +35,10 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 List.of("There's an already opened file in use."));
     }
 
+    /**
+     * Closes the currently opened file (if any) and changes the current
+     * file state to 'closed'.
+     */
     @Override
     public DataSourceOperationResult close() {
         String currentFile = dataSource.getCurrentFile().getPath();
@@ -46,6 +50,10 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 .success("Successfully closed " + currentFile);
     }
 
+    /**
+     * Saves all the changes made to the currently opened file
+     * but without closing it.
+     */
     @Override
     public DataSourceOperationResult save() {
         String filePath = dataSource.getCurrentFile().getPath();
@@ -82,6 +90,13 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         return null;
     }
 
+    /**
+     * Updates an element in the JSON object given the new JSON payload.
+     * Note that if the payload provided has an invalid JSON schema, then
+     * the operation fails.
+     * @param path The JSON path to the element being updated.
+     * @param jsonPayload The new data the elements it going be updated with.
+     */
     @Override
     public DataSourceOperationResult setElement(String path, String jsonPayload) {
         String[] segments = pathInterpreter.getSegments(path);
@@ -129,6 +144,12 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 .failure(List.of("Couldn't update the specified element."));
     }
 
+    /**
+     * @param path The path to the new element. Note that if it does not exist, then
+     * the algorithm will make sure it is created with blank objects.
+     * @param jsonPayload The payload for the newly created element.
+     * @return
+     */
     @Override
     public DataSourceOperationResult createElement(String path, String jsonPayload) {
         String[] segments = pathInterpreter.getSegments(path);
@@ -173,6 +194,10 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         return DataSourceOperationResult.failure(List.of("Invalid path."));
     }
 
+    /**
+     * Deletes the element at the given path (if it exists).
+     * @param path The path for the element to be deleted.
+     */
     @Override
     public DataSourceOperationResult deleteElement(String path) {
         String[] segments = pathInterpreter.getSegments(path);
@@ -209,6 +234,13 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 .failure(List.of("Could not delete the specified element."));
     }
 
+    /**
+     * Moves element/s at the given source path to the specified destination path.
+     * Note that if the destination does not exist, then the algorithm will make
+     * sure they get created with blank objects.
+     * @param fromPath The source path from which element/s are going to be moved.
+     * @param toPath The destination path to which element/s are going to be moved.
+     */
     @Override
     public DataSourceOperationResult moveElements(String fromPath, String toPath) {
         String[] fromSegments = pathInterpreter.getSegments(fromPath);
@@ -245,6 +277,12 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
                 .failure(List.of("Could not move the specified elements."));
     }
 
+    /**
+     * Searches for elements at the specified path. Note that it returns
+     * a list of objects / elements instead of a single object result.
+     * @param key The path at which to search elements.
+     * @return
+     */
     @Override
     public List<?> searchElement(String key) {
         String[] segments = pathInterpreter.getSegments(key);
@@ -254,6 +292,11 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         return convertObjectToList(currentJsonElement);
     }
 
+    /**
+     * Validates the JSON schema of the object in the currently opened file.
+     * Note that if the schema is found invalid, then the file will immediately be
+     * closed, since we can't work with an invalid JSON object.
+     */
     @Override
     public DataSourceOperationResult validateSchema() {
         try {
@@ -285,6 +328,9 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         }
     }
 
+    /**
+     * Returns a friendly indented string representation of the JSON object.
+     */
     @Override
     public String toFriendlyString() {
         return dataSource
@@ -301,7 +347,14 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         }
     }
 
+    /**
+     * A core method for traversing / searching a map structure.
+     * @param segments A sequence of keys to search for in the traversal.
+     * @param jsonMap A map structure that will be traversed. Note that it's
+     *                keys have to be of type String.
+     */
     private Object traverseJsonObject(String[] segments, Map<String, ?> jsonMap) {
+        if(segments == null) return null;
         if(segments.length == 0) return jsonMap;
 
         Object current = jsonMap;
@@ -328,6 +381,13 @@ public class JSONDataSourceOpenedFileState implements JSONDataSourceState {
         return current;
     }
 
+    /**
+     * Another core method for traversing / searching a map structure and
+     * creating elements along the way if specified keys are not found.
+     * @param segments A sequence of keys to search for in the traversal.
+     * @param jsonMap A map structure that will be traversed. Note that it's
+     *                keys have to be of type String.
+     */
     private Object traverseJsonObjectAndCreateElementsIfAbsent
             (String[] segments, Map<String, ?> jsonMap) {
         if(segments.length == 0) return jsonMap;

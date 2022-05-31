@@ -25,8 +25,16 @@ public class ExitCommand extends CLICommand {
     }
     
     private void exitGracefully() {
-        System.out.println("Exiting app ...");
+        System.out.println("Exiting app ... Goodbye!");
+        pauseFor(2000);
         System.exit(0);
+    }
+
+    private void pauseFor(long milliseconds) {
+        try {
+            Thread.sleep(milliseconds);
+        } catch (InterruptedException ignored) {
+        }
     }
 
 }

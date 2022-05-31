@@ -11,6 +11,9 @@ public class FileNameConstants {
             Path.of(Paths.get("").toAbsolutePath().toString())
             .toString();
 
+    public static final String currentDirectory =
+            Paths.get("").toAbsolutePath().toString();
+
     public static final String filesDirectory =
             Path.of(baseDirectory, "src", "main", "java", "com", "vnikolaev", "files")
             .toString();

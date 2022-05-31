@@ -152,9 +152,9 @@ public final class JSONDataSourceImpl implements JSONDataSource {
         boolean isValidAbsoluteDir = isValidDirectory(absoluteDirectory);
 
         if(isValidAbsoluteDir || isValidRelativeDir) {
-            currentDirectory = isValidAbsoluteDir
-                    ? absoluteDirectory.toString()
-                    : relativeDirectory.toString();
+            currentDirectory = isValidRelativeDir
+                    ? relativeDirectory.getAbsolutePath()
+                    : absoluteDirectory.getAbsolutePath();
 
             return DataSourceOperationResult
                     .success("Successfully changed directory to "
@@ -166,8 +166,8 @@ public final class JSONDataSourceImpl implements JSONDataSource {
                         + location + " doesn't exist."));
     }
 
-    private boolean isValidDirectory(File relativeDirectory) {
-        return relativeDirectory.exists() && relativeDirectory.isDirectory();
+    private boolean isValidDirectory(File directory) {
+        return directory.exists() && directory.isDirectory();
     }
 
     @Override
